@@ -1,15 +1,39 @@
 <?php
 include('connection.php');
 
-// Consulta para obtener los datos
-$query = "SELECT * FROM sotapedi";
-$result = $pdo->query($query);
+// Variables de paginación
+$recordsPerPage = 10; // Número de registros por página
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Página actual
+$offset = ($page - 1) * $recordsPerPage; // Calcular el OFFSET
 
-if ($result->rowCount() > 0) {
-    $data = $result->fetchAll(PDO::FETCH_ASSOC); 
-} else {
-    $data = [];
-}
+// Consulta para contar el total de registros
+$totalQuery = "SELECT COUNT(*) as total FROM public.sotapedi";
+$totalResult = $pdo->query($totalQuery);
+$totalRecords = $totalResult->fetch(PDO::FETCH_ASSOC)['total'];
+$totalPages = ceil($totalRecords / $recordsPerPage);
+
+// Consulta para obtener los datos paginados
+$query = "
+SELECT nroo_c, fcho_c, coddid, nrodid, sigase, nomcli, 
+    CASE 
+        WHEN codmon = '2' THEN 'US$' 
+        ELSE 'S/.' 
+    END AS moneda, 
+    CASE 
+        WHEN totnet <> 0 THEN totnet::TEXT 
+        ELSE '' 
+    END AS total_neto, 
+    estfac, fchrcp, hrarcp, codcmp, codpgo, nrodoc
+FROM public.sotapedi
+LIMIT :limit OFFSET :offset
+";
+
+$stmt = $pdo->prepare($query);
+$stmt->bindParam(':limit', $recordsPerPage, PDO::PARAM_INT);
+$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
+
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -117,36 +141,44 @@ if ($result->rowCount() > 0) {
                                 echo "<th>" . ucfirst(str_replace('_', ' ', $column)) . "</th>";
                             }
                         ?>
-                        <th>Acciones</th> <!-- Columna de acciones -->
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($data as $index => $row): ?>
-                        <tr class="dataRow">
+                    <?php foreach ($data as $row): ?>
+                        <tr>
                             <?php foreach ($row as $key => $value): ?>
-                                <td class="<?php echo $key; ?>"><?php echo htmlspecialchars($value); ?></td>
+                                <td><?php echo htmlspecialchars($value); ?></td>
                             <?php endforeach; ?>
-                            <td class="actions">
-                                <!-- Botones de acción (en fila horizontal) -->
-                                <div class="action-buttons">
-                                    <button class="action-btn edit-btn">Editar</button>
-                                    <button class="action-btn detail-btn">Detalle</button>
-                                    <button class="action-btn delete-btn">Eliminar</button>
-                                </div>
+                            <td>
+                                <button class="action-btn edit-btn">Editar</button>
+                                <button class="action-btn detail-btn">Detalle</button>
+                                <button class="action-btn delete-btn">Eliminar</button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
+        <!-- Paginación -->
+        <div class="pagination">
+            <?php if ($page > 1): ?>
+                <a href="?page=<?php echo $page - 1; ?>" class="prev-btn">Anterior</a>
+            <?php endif; ?>
+
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="?page=<?php echo $i; ?>" class="page-btn <?php echo ($i == $page) ? 'active' : ''; ?>">
+                    <?php echo $i; ?>
+                </a>
+            <?php endfor; ?>
+
+            <?php if ($page < $totalPages): ?>
+                <a href="?page=<?php echo $page + 1; ?>" class="next-btn">Siguiente</a>
+            <?php endif; ?>
+        </div>
     <?php else: ?>
         <p>No se encontraron datos.</p>
     <?php endif; ?>
-
-    <!-- Botón Agregar debajo de la grilla -->
-    <div class="add-button-container">
-        <button class="add-btn">Agregar</button>
-    </div>
 </div>
 
 <script src="Java_Admi.js"></script>
