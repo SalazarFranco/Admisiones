@@ -1,0 +1,189 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.data-grid {
+    margin: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+.table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    word-wrap: break-word; 
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+tr:nth-child(odd) {
+    background-color: #f7f7f7;
+}
+
+td {
+    max-width: 200px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+th {
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.header {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.column {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+}
+
+.section {
+    margin-bottom: 20px;
+}
+
+.section h1 {
+    font-size: 20px;
+    margin: 0 0 10px 0;
+}
+
+.filters, .order-status, .search-filters, .date-range-filters {
+    margin: 10px 0;
+}
+
+.filters label, .order-status label, .search-filters label, .date-range-filters label {
+    margin: 0 10px;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.filters input[type="radio"], .order-status input[type="radio"], .search-filters input[type="radio"], .date-range-filters input[type="radio"] {
+    margin-right: 10px;
+}
+
+.search, .order-search, .date-range-search {
+    display: flex;
+    justify-content: left;
+    margin: 10px 0;
+}
+
+.search input, .order-search input, .date-range-search input {
+    margin: 0 10px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: -20px;
+    width: 100%;
+}
+
+.button-wrapper button {
+    padding: 12px 24px;
+    font-size: 18px;
+}
+
+/* Estilos para los botones de acción */
+.action-buttons {
+    display: flex; /* Los botones se colocan en una fila horizontal */
+    justify-content: flex-start;
+}
+
+.action-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 5px;
+    transition: background-color 0.3s;
+}
+
+.action-btn:hover {
+    background-color: #0056b3;
+}
+
+.edit-btn {
+    background-color: #28a745;
+}
+
+.edit-btn:hover {
+    background-color: #218838;
+}
+
+.detail-btn {
+    background-color: #ffc107;
+}
+
+.detail-btn:hover {
+    background-color: #e0a800;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* Estilos para el botón Agregar */
+.add-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.add-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 24px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.add-btn:hover {
+    background-color: #218838;
+}
